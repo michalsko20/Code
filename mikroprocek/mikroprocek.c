@@ -1,22 +1,4 @@
 /*****************************************************************************************
- * Podstawy technik mikroprocesorowych 2
- * 
- * Politechnika Wroc³awska
- * Katedra Maszyn, Napedow i pomiarow elektrycznych
- *
- * Data: 
- *
- * Grupa nr: 5
- * 1. Szymon Bartosiak 259817
- * 2. Micha³ Skoneczny 259795
- * 3. Wojciech D¹browicki 259814
- * 
- *
- * Temat: 
- *
-*****************************************************************************************/
-
-/*****************************************************************************************
 
                    ***** DYREKTYWY PREPROCESORA *****
 
@@ -29,7 +11,7 @@
 #include <avr/interrupt.h>
 #include <util/delay.h>
 
-// Makra upraszczaj¹ce dostêp do rejsestrów ukladu I/O
+// Makra upraszczajÂ¹ce dostÃªp do rejsestrÃ³w ukladu I/O
 #define DDR(x) tempDDR(x)
 #define tempDDR(x) (DDR##x)
 #define PORT(x) tempPORT(x)
@@ -78,7 +60,7 @@
 #define E_OFF 	PORT(LCD_EPORT) &= ~(1<<LCD_E)			// stan niski na linii E
 
 
-// Komendy steruj¹ce wyswietlaczem:
+// Komendy sterujÂ¹ce wyswietlaczem:
 #define LCD_COMM_CLEAR					0b00000001
 #define LCD_COMM_HOME					0b00000010
 #define LCD_COMM_ENTRY					0b00000100
@@ -116,7 +98,7 @@ volatile uint16_t Timer3;
 volatile uint16_t P1;
 
 uint8_t czas = 10;
-uint16_t temp, moc;//zmienna do obliczeñ napiêcia
+uint16_t temp, moc;//zmienna do obliczeÃ± napiÃªcia
 uint8_t low, s = 0;
 
 typedef struct {
@@ -240,7 +222,7 @@ int main() //opisac
 	
 	
 		 
-	sei();//Globalne uruchomienie przerwañ	
+	sei();//Globalne uruchomienie przerwaÃ±	
 	
 	while(1)
 	{
@@ -254,7 +236,7 @@ int main() //opisac
 		
 		ADCSRA |= (1<<ADSC);//ADSC: Uruchomienie pojedynczej konwersji
 		
-		while(ADCSRA & (1<<ADSC)); //czeka na zakoñczenie konwersji
+		while(ADCSRA & (1<<ADSC)); //czeka na zakoÃ±czenie konwersji
 		{ 
 			low=ADCL;   //wpisywanie wartosci
 			temp = ADCH<<8;
@@ -288,7 +270,7 @@ void key_press( TBUTTON * btn ) {
 	if( !btn->klock && !key_press ) {
 		btn->klock=1;
 		
-		// reakcja na PRESS krótkie wciniêcie klawisza
+		// reakcja na PRESS krÃ³tkie wciniÃªcie klawisza
 		if(btn->kfun1) btn->kfun1();
 		btn->flag=1;
 		P1 = (btn->wait_time_s*1000);
@@ -301,7 +283,7 @@ void key_press( TBUTTON * btn ) {
 			btn->flag=0;
 		}
 		} else if( btn->flag && !P1 ) {
-		// reakcja na d³u¿sze wciniêcie klawisza
+		// reakcja na dÂ³uÂ¿sze wciniÃªcie klawisza
 		if(btn->kfun2) btn->kfun2();
 		btn->flag=0;
 	}
@@ -406,13 +388,13 @@ void lcd_init (void)
 	//tryb czterobitowy, 2 wiersze, znak 5x7
 	lcd_wyslijKomende(LCD_COMM_FUNC | LCD_COMM_4BIT | LCD_COMM_2WIERSZE | LCD_COMM_5x7);
 
-	// w³¹czenie kursora
+	// wÂ³Â¹czenie kursora
 	lcd_wyslijKomende(LCD_COMM_ONOFF| LCD_COMM_KURSOROFF);
 	
-	//w³¹czenie wyœwietlacza
+	//wÂ³Â¹czenie wyÂœwietlacza
 	lcd_wyslijKomende(LCD_COMM_ONOFF| LCD_COMM_DISPLAYON);
 	
-	//przesuwanie kursora w prawo bez przesuwania zawartoœci ekranu
+	//przesuwanie kursora w prawo bez przesuwania zawartoÂœci ekranu
 	lcd_wyslijKomende(LCD_COMM_ENTRY | LCD_COMM_ENTRYR);
 	
 	//czyszczenie ekranu
@@ -482,18 +464,18 @@ void lcd_locate(uint8_t y, uint8_t x)
 void init_timer()
 {
 	
-	TCCR0 |= (1<<COM00); //Zmiana stanu wyjœcia OC1A na niski przy porównaniu A
-	TCCR0 &= ~(1<<COM01);		  //Zmiana stanu wyjœcia OC1B na niski przy porównaniu B
+	TCCR0 |= (1<<COM00); //Zmiana stanu wyjÂœcia OC1A na niski przy porÃ³wnaniu A
+	TCCR0 &= ~(1<<COM01);		  //Zmiana stanu wyjÂœcia OC1B na niski przy porÃ³wnaniu B
 	TCCR0 |= (1<<WGM01);    //ctc
 	TCCR0 &= ~(1<<WGM00);
-	TCCR0 &= ~(1<<FOC0);        //fors a³tput komper
+	TCCR0 &= ~(1<<FOC0);        //fors aÂ³tput komper
 	
 	TCCR0 |= (1<<CS00) | (1<<CS01); 
 	TCCR0 &= ~(1<<CS02); // preskaler 64
 	
 	TIMSK |= (1<<OCIE0);
 	
-	OCR0=250;    //Wartoœæ pocz¹tkowa porównania A (Wyjœcie OC1A - PB1),	
+	OCR0=250;    //WartoÂœÃ¦ poczÂ¹tkowa porÃ³wnania A (WyjÂœcie OC1A - PB1),	
 }
 void pwm()
 {
@@ -515,16 +497,16 @@ void pwm()
 void przetwornik(void)
 {
 	//Inicjalizacja ADC
-	ADCSRA |= (1<<ADEN) //ADEN=1 (w³¹czenie przetwornika ADC)
+	ADCSRA |= (1<<ADEN) //ADEN=1 (wÂ³Â¹czenie przetwornika ADC)
 			|(1<<ADPS0) // ustawienie preskalera na 128
 			|(1<<ADPS1)
 			|(1<<ADPS2);
 	
-	ADMUX  =    (1<<REFS0) | (0<<REFS1)          //VCC jako napiêcie referencyjne
-				|(1<<MUX2) | (1<<MUX0);			 //wybór kana³u pomiarowego (ADC5 - Pin 5)
+	ADMUX  =    (1<<REFS0) | (0<<REFS1)          //VCC jako napiÃªcie referencyjne
+				|(1<<MUX2) | (1<<MUX0);			 //wybÃ³r kanaÂ³u pomiarowego (ADC5 - Pin 5)
 	ADMUX &= ~(1<<ADLAR);
 	
-	DDRA &= ~(1<<ADCIN);               //Ustawienie Wejœcia ADC
+	DDRA &= ~(1<<ADCIN);               //Ustawienie WejÂœcia ADC
 }
 
 /*****************************************************************************************
