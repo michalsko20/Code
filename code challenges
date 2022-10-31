@@ -1,0 +1,12 @@
+def prime_finder(n):
+  lower = 1
+  upper = n
+  chceck = []
+  for num in range(lower, upper + 1):
+    for i in range(2, num):
+      if (num % i) == 0:
+        break
+    else:
+      chceck.append(num)
+  return chceck  
+print(prime_finder(500))
